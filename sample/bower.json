@@ -1,0 +1,7 @@
+{
+  "name": "ui-phaser-plugin",
+  "version": "0.0.0",
+  "dependencies": {
+    "phaser-official": "4.4"
+  }
+}
