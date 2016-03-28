@@ -14,6 +14,8 @@
       this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500,500);
 
       this.sprite.events.onInputDown.add(this.clickListener, this);
+
+      this.game.plugins.add(Phaser.Plugin.UI);
     },
     update: function() {
 
