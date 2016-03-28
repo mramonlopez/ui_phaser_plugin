@@ -1,6 +1,7 @@
 
   'use strict';
   function Play() {}
+
   Play.prototype = {
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -15,7 +16,11 @@
 
       this.sprite.events.onInputDown.add(this.clickListener, this);
 
-      this.game.plugins.add(Phaser.Plugin.UI);
+      this.ui = this.game.plugins.add(Phaser.Plugin.UI);
+
+      console.log('>>>>>>', this.ui.add);
+
+      this.ui.add.textBox(200, 50, 20, this.game);
     },
     update: function() {
 

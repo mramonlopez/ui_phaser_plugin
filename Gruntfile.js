@@ -37,7 +37,7 @@ module.exports = function (grunt) {
                     {expand: true, cwd: 'example', src: ['css/**'], dest: 'example/www/'},
                     {expand: true, cwd: 'example', src: ['assets/**'], dest: 'example/www/'},
                     {expand: true, cwd: 'example', src: ['index.html'], dest: 'example/www/'},
-                    {expand: true, flatten: true, cwd: 'example', src: ['node_modules/phaser/dist/*.js'], dest: 'example/www/js/'}
+                    {expand: true, flatten: true, src: ['node_modules/phaser/dist/*.js'], dest: 'example/www/js/'}
                 ]
             }
         },
