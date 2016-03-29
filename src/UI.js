@@ -14,7 +14,7 @@ Phaser.Plugin.UI.prototype._components = [];
 Phaser.Plugin.UI.prototype.seletedItem = -1;
 
 Phaser.Plugin.UI.prototype.addTextBox = function (x, y, width, height, maxLength) {
-	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
+	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game);
 
 	tb.x = x;
 	tb.y = y;

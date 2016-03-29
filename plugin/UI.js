@@ -1,4 +1,4 @@
-/* 2016-03-29 */
+/* 2016-03-30 */
 'use strict';
 
 Phaser.Plugin.UI = function (game, parent) {
@@ -15,7 +15,7 @@ Phaser.Plugin.UI.prototype._components = [];
 Phaser.Plugin.UI.prototype.seletedItem = -1;
 
 Phaser.Plugin.UI.prototype.addTextBox = function (x, y, width, height, maxLength) {
-	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
+	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game);
 
 	tb.x = x;
 	tb.y = y;
@@ -61,7 +61,7 @@ TextBox
 'use strict';
 
 Phaser.Plugin.UI.TextBox = function (width, height, maxLength, game, parent) {
-	//Phaser.Group.call(this, game, parent);
+	Phaser.Group.call(this, game);
 
 	this.text = '';
 
@@ -70,17 +70,31 @@ Phaser.Plugin.UI.TextBox = function (width, height, maxLength, game, parent) {
 	this.height = height;
 
 	this.maxLength = maxLength;
+
+	this.background = this.game.add.graphics(0, 0, this);
+	this.background.beginFill(0x202020);
+	this.background.drawRect(0, 0, width, height);
+	this.background.endFill();
+
+	this._text = this.game.add.Text
+
+	var style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+    this._text = game.add.text(0, 0, "", style, this);
 };
 
-//Phaser.Plugin.UI.TextBox.prototype = Object.create(Phaser.Group.prototype);
+Phaser.Plugin.UI.TextBox.prototype = Object.create(Phaser.Group.prototype);
 Phaser.Plugin.UI.TextBox.prototype.constructor = Phaser.Plugin.UI.TextBox;
 
 Phaser.Plugin.UI.TextBox.prototype.sendKey = function(key) {
-	if (key === Phaser.KeyCode.BACKSPACE) {
-		this.text = this.text.substring(0, this.text.length - 1);
-	} else  if (this.text.length < this.maxLength) {
+	if (typeof key === "number") {
+		if (key === Phaser.KeyCode.BACKSPACE) {
+			this.text = this.text.substring(0, this.text.length - 1);
+		} 
+	} else if (this.text.length < this.maxLength && key.charCodeAt(0) >= Phaser.KeyCode.SPACEBAR) {
 		this.text += key;
 	}
+
+	this._text.text = this.text;
 
 	console.log('TEXT:', this.text);
 }
