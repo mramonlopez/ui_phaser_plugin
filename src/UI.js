@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 
 Phaser.Plugin.UI = function (game, parent) {
 	Phaser.Plugin.call(this, game, parent);
@@ -13,28 +13,28 @@ Phaser.Plugin.UI.prototype._components = [];
 
 Phaser.Plugin.UI.prototype.seletedItem = -1;
 
-Phaser.Plugin.UI.prototype.add = {
-	textBox: function (x, y, width, height, maxLength) {
-		var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
+Phaser.Plugin.UI.prototype.addTextBox = function (x, y, width, height, maxLength) {
+	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
 
-		tb.x = x;
-		tb.y = y;
+	tb.x = x;
+	tb.y = y;
 
-		console.log('THIS', this);
+	this._components.push(tb);
 
-		this._components.push(tb);
-
-		return tb;
+	if (this.seletedItem < 0) {
+		this.seletedItem = 0;
 	}
-};
+
+	return tb;
+}
 
 Phaser.Plugin.UI.prototype.onKeyDown = function(event) {
-	if (event.keyCode === 8) {
-		console.log('BACKSPACE');
+	if (event.keyCode === Phaser.KeyCode.BACKSPACE) {
+		this.onKeyPress(Phaser.KeyCode.BACKSPACE);
 	} else if (event.keyCode === 13) {
-		console.log('ENTER');
+		this.nextComponent();
 	} else if (event.keyCode === 9) {
-		console.log('TAB');
+		this.nextComponent();
 	} else {
 		console.log('KEY', event.keyCode);
 	}	
@@ -45,3 +45,9 @@ Phaser.Plugin.UI.prototype.onKeyPress = function(character) {
 		this._components[this.seletedItem].sendKey(character);
 	}
 };
+
+Phaser.Plugin.UI.prototype.nextComponent = function() {
+	if (this._components.length > 1) {
+		this.seletedItem = (this.seletedItem === this._components.length - 1) ? 0 : this.seletedItem + 1; 
+	}
+}

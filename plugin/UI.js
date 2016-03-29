@@ -1,5 +1,5 @@
-/* 2016-03-28 */
- 'use strict';
+/* 2016-03-29 */
+'use strict';
 
 Phaser.Plugin.UI = function (game, parent) {
 	Phaser.Plugin.call(this, game, parent);
@@ -14,28 +14,28 @@ Phaser.Plugin.UI.prototype._components = [];
 
 Phaser.Plugin.UI.prototype.seletedItem = -1;
 
-Phaser.Plugin.UI.prototype.add = {
-	textBox: function (x, y, width, height, maxLength) {
-		var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
+Phaser.Plugin.UI.prototype.addTextBox = function (x, y, width, height, maxLength) {
+	var tb = new Phaser.Plugin.UI.TextBox(width, height, maxLength, this.game, this);
 
-		tb.x = x;
-		tb.y = y;
+	tb.x = x;
+	tb.y = y;
 
-		console.log('THIS', this);
+	this._components.push(tb);
 
-		this._components.push(tb);
-
-		return tb;
+	if (this.seletedItem < 0) {
+		this.seletedItem = 0;
 	}
-};
+
+	return tb;
+}
 
 Phaser.Plugin.UI.prototype.onKeyDown = function(event) {
-	if (event.keyCode === 8) {
-		console.log('BACKSPACE');
+	if (event.keyCode === Phaser.KeyCode.BACKSPACE) {
+		this.onKeyPress(Phaser.KeyCode.BACKSPACE);
 	} else if (event.keyCode === 13) {
-		console.log('ENTER');
+		this.nextComponent();
 	} else if (event.keyCode === 9) {
-		console.log('TAB');
+		this.nextComponent();
 	} else {
 		console.log('KEY', event.keyCode);
 	}	
@@ -47,11 +47,18 @@ Phaser.Plugin.UI.prototype.onKeyPress = function(character) {
 	}
 };
 
+Phaser.Plugin.UI.prototype.nextComponent = function() {
+	if (this._components.length > 1) {
+		this.seletedItem = (this.seletedItem === this._components.length - 1) ? 0 : this.seletedItem + 1; 
+	}
+}
+
+
 
 /************************************************
 TextBox
-*/
- 'use strict';
+************************************************/
+'use strict';
 
 Phaser.Plugin.UI.TextBox = function (width, height, maxLength, game, parent) {
 	//Phaser.Group.call(this, game, parent);
@@ -70,10 +77,10 @@ Phaser.Plugin.UI.TextBox.prototype.constructor = Phaser.Plugin.UI.TextBox;
 
 Phaser.Plugin.UI.TextBox.prototype.sendKey = function(key) {
 	if (key === Phaser.KeyCode.BACKSPACE) {
-		this.text = this.text(0, this.text.length - 1);
+		this.text = this.text.substring(0, this.text.length - 1);
 	} else  if (this.text.length < this.maxLength) {
 		this.text += key;
 	}
 
-	console.log('TEXT', this.text);
+	console.log('TEXT:', this.text);
 }
