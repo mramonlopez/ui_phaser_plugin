@@ -6,8 +6,8 @@
     create: function() {
       this.ui = this.game.plugins.add(Phaser.Plugin.UI);
 
-      this.ui.addTextBox(0, 0, 200, 50, 20);
-      this.ui.addTextBox(0, 80, 200, 50, 20);
+      this.ui.addTextBox(this.game.world.centerX - 100, 80, 200, 20, 40);
+      this.ui.addTextBox(this.game.world.centerX - 100, 110, 200, 20, 20);
     },
     update: function() {
 
