@@ -23,6 +23,7 @@ Phaser.Plugin.UI.prototype.addTextBox = function (x, y, width, height, maxLength
 
 	if (this.seletedItem < 0) {
 		this.seletedItem = 0;
+		this._components[this.seletedItem].setFocused(true);
 	}
 
 	return tb;
@@ -48,6 +49,8 @@ Phaser.Plugin.UI.prototype.onKeyPress = function(character) {
 
 Phaser.Plugin.UI.prototype.nextComponent = function() {
 	if (this._components.length > 1) {
+		this._components[this.seletedItem].setFocused(false);
 		this.seletedItem = (this.seletedItem === this._components.length - 1) ? 0 : this.seletedItem + 1; 
+		this._components[this.seletedItem].setFocused(true);
 	}
 }

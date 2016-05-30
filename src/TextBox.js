@@ -14,15 +14,16 @@ var TextBox = function (width, height, maxLength, game, parent) {
 
 	this.maxLength = maxLength;
 
-	this._text = this.game.add.Text
-
+	this._focused = false;
 	this._background = this._createBox(0x202020);
-	this.mask = this._createBox(0xffffff);
 
 	var style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" },
 		textView = game.add.text(0, 0, "", style, this);
 
 	this.setTextView(textView);
+	this.setCursor(this._createCursor());
+
+	this.mask = this._createBox(0xffffff);
 };
 
 TextBox.prototype = Object.create(Phaser.Group.prototype);
@@ -47,6 +48,20 @@ TextBox.prototype.setTextView = function(textView) {
 	this._textView = textView;
 }
 
+TextBox.prototype.setCursor = function(cursor) {
+	this._cursor && this._cursor.destroy();
+
+	this._cursor = cursor;
+	this._cursor.visible = false;
+}
+
+TextBox.prototype.setFocused = function(focus) {
+	this._focused = focus;
+	this._cursor.visible = focus;
+
+	this._updateView();
+}
+
 TextBox.prototype._createBox = function(color) {
 	var box = this.game.add.graphics(0, 0, this);
 	box.beginFill(color);
@@ -57,11 +72,31 @@ TextBox.prototype._createBox = function(color) {
 }
 
 TextBox.prototype._updateView = function() {
-	if (this._textView.width > this.boxWidth) {
-		this._textView.x = this.boxWidth - this._textView.width;
+	var width = this._textView.width + this._cursor.width;
+	if (this._focused && width > this.boxWidth) {
+		this._textView.x = this.boxWidth - width;
 	} else {
 		this._textView.x = 0;
 	}
+
+	this._cursor.x = this._textView.x + this._textView.width;
+}
+
+TextBox.prototype._createCursor = function() {
+	var width = 2,
+		bar = this.game.add.graphics(0, 0);
+
+	bar.beginFill(0xffffff, 1);
+	bar.drawRect(0, 0, width, this.boxHeight);
+	bar.endFill();
+
+	var cursor = this.create(0, 0, bar.generateTexture());
+
+	bar.destroy();
+
+	console.log('cursor creado');
+	console.log(this.game.cache);
+	return cursor;
 }
 
 Phaser.Plugin.UI.TextBox = TextBox;
